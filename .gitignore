@@ -1,0 +1,28 @@
+# 1. DEPENDENTE ȘI BINARII
+venv/
+*.pyc
+__pycache__/
+
+# 2. CACHE-URI ȘI TEMPORARE
+.cache/
+.ipynb_checkpoints/
+.DS_Store
+.vscode/
+
+# 3. DATE PERSONALE ȘI JUPYTER/IPYTHON METADATA
+.jupyter.log
+.jupyter/
+.ipython/
+.local/
+.ssh/
+.profile
+.bash*
+.gitconfig
+
+# 4. EXCLUDEȚI DATELE MARI SAU AUXILIARE (PDF-uri, Audio, etc.)
+*.zip
+*.tar.gz
+*.wav
+*.mp3
+*.flac
+dataset/robocall-audio-dataset-main/robocall-audio-dataset-main/pdf_files/
