@@ -26,3 +26,4 @@ __pycache__/
 *.mp3
 *.flac
 dataset/robocall-audio-dataset-main/robocall-audio-dataset-main/pdf_files/
+.git-credentials
