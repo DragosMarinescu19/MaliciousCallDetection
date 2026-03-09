@@ -1,25 +1,28 @@
-# Nucleul pentru Deep Learning și CNN
+# Deep Learning + CNN
 torch
 torchaudio
 
-# Procesare Audio și Spectrograme
+# Audio processing and spectograms
 librosa
 soundfile
 pydub
 
-# Manipulare Date și Metadata
+# Data Manipulation and Metadata
 numpy
 pandas
 datasets
 
-# S3 / MinIO (pentru descărcarea datelor)
+# S3 / MinIO 
 boto3
 
-# Generare Date Sintetice (TTS)
+# Generate sintetic Data
 gTTS
 
-# Utilitare ML și Vizualizare
+# ML and Visualization
 scikit-learn
 matplotlib
 tqdm
 ipykernel
+
+# Logging 
+wandb
