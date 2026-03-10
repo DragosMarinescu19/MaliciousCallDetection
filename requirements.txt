@@ -6,6 +6,7 @@ torchaudio
 librosa
 soundfile
 pydub
+sounddevice
 
 # Data Manipulation and Metadata
 numpy
