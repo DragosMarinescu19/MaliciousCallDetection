@@ -7,6 +7,7 @@ librosa
 soundfile
 pydub
 sounddevice
+yt-dlp
 
 # Data Manipulation and Metadata
 numpy
