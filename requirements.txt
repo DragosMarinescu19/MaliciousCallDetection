@@ -1,6 +1,7 @@
 # Deep Learning + CNN
 torch
 torchaudio
+optuna
 
 # Audio processing and spectograms
 librosa
