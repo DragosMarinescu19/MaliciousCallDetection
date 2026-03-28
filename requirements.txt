@@ -24,8 +24,12 @@ gTTS
 # ML and Visualization
 scikit-learn
 matplotlib
+seaborn
 tqdm
 ipykernel
 
 # Logging 
 wandb
+
+# GUI Application
+streamlit
