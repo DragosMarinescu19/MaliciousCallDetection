@@ -29,3 +29,6 @@ ipykernel
 
 # Logging 
 wandb
+
+# GUI Application
+streamlit
