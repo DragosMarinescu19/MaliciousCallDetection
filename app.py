@@ -10,6 +10,42 @@ import tempfile
 from typing import Type, TypedDict, cast
 
 
+
+class OldCNN(nn.Module):
+    def __init__(self):
+        super(OldCNN, self).__init__()
+        self.features = nn.Sequential(
+
+            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, padding=1),#in_channels=1 because spectogram is grayscale not RGB
+            nn.BatchNorm2d(16), #Normalization(mean=0,std=1)
+            nn.ReLU(),
+            nn.MaxPool2d(2),#reduce image in half, concentrating on the most imp pixel
+
+            nn.Conv2d(16, 32, kernel_size=3, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+
+        )
+
+        self.pool = nn.AdaptiveAvgPool2d((1, 1)) #256 channels, 1 height, 1 width
+
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(32, 128),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(128, 2)
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        x = self.pool(x)
+        x = self.classifier(x)
+        return x
+
+
+
 class CNN(nn.Module):
     def __init__(self,dropout=0.41):
         super(CNN, self).__init__()
@@ -114,7 +150,6 @@ def create_spectrograms(audio, sr=16000, window_size=5.0, min_overlap=1.5):
     return spectrograms, time_ranges
 
 
-# ---- Type definitions (silence Pyre2 false-positives) ----
 
 class ModelEntry(TypedDict):
     file: str
@@ -143,6 +178,11 @@ MODEL_INFO: dict[str, ModelEntry] = {
         "file": "malicious_call_detector_v15_best.pt",
         "cls": CNN,
         "desc": "Trained with extra Normal + Malicious data. Good balance, improved Normal recall."
+    },
+    "V4 — Without Real Data": {
+        "file": "malicious_call_detector_v4_best.pt",
+        "cls": OldCNN,
+        "desc": "Trained without real data. Worst performance."
     }
 }
 
@@ -177,8 +217,8 @@ def predict(model, spectrograms, threshold, device) -> list[PredResult]:
     with torch.no_grad():
         for spec in spectrograms:
             spec = spec.to(device)
-            output = model(spec)
-            prob = torch.softmax(output, dim=1)
+            pred = model(spec)
+            prob = torch.softmax(pred, dim=1)
             mal_prob = prob[0][1].item()
             results.append({
                 "malicious_prob": mal_prob,
@@ -355,17 +395,17 @@ with tab_upload:
 
         # check duration limit
         if duration > max_duration:
-            st.error(f"Audio is {duration:.0f}s long. Maximum allowed is {max_duration}s. Please trim your file or increase the limit in the sidebar.")
-        else:
-            st.audio(uploaded, format=f"audio/{suffix[1:]}")
+            st.info(f"Audio is {duration:.0f}s long. Maximum allowed is {max_duration}s. The audio was truncated. You can also adjust the max duration in the sidebar.")
+            audio = audio[:int(max_duration * sr)]   
+        st.audio(uploaded, format=f"audio/{suffix[1:]}")
 
-            # load model and predict
-            model, threshold, error = load_model(selected_model)
-            if error:
-                st.error(error)
-            else:
-                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                display_results(audio, sr, model, threshold, device)
+        # load model and predict
+        model, threshold, error = load_model(selected_model)
+        if error:
+            st.error(error)
+        else:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            display_results(audio, sr, model, threshold, device)
 
 
 # TAB 2: Record
@@ -384,8 +424,11 @@ with tab_record:
         duration = len(audio) / sr
 
         if duration > max_duration:
-            st.error(f"Recording is {duration:.0f}s. Maximum is {max_duration}s.")
-        elif duration < 2.5:
+            st.info(f"Recording is {duration:.0f}s. Maximum is {max_duration}s. The audio was truncated. You can also adjust the max duration in the sidebar.")
+            audio = audio[:int(max_duration * sr)]
+            duration = max_duration
+            
+        if duration < 2.5:
             st.warning("Recording is too short. Please record at least 3 seconds.")
         else:
             model, threshold, error = load_model(selected_model)
@@ -416,27 +459,29 @@ with tab_compare:
 
         audio, sr = librosa.load(tmp_path, sr=16000)
         os.unlink(tmp_path)
+        duration = len(audio) / sr
 
-        if len(audio) / sr > max_duration:
-            st.error(f"Audio too long ({len(audio)/sr:.0f}s). Max is {max_duration}s.")
-        else:
-            st.audio(compare_file, format=f"audio/{suffix[1:]}")
+        if duration > max_duration:
+            st.info(f"Recording is {duration:.0f}s. Maximum is {max_duration}s. The audio was truncated. You can also adjust the max duration in the sidebar.")
+            audio = audio[:int(max_duration * sr)]
+        st.audio(compare_file, format=f"audio/{suffix[1:]}")
 
-            col_a, col_b = st.columns(2)
-            with col_a:
-                st.markdown(f"### {model_a}")
-                m, t, err = load_model(model_a)
-                if err:
-                    st.error(err)
-                else:
-                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                    display_results(audio, sr, m, t, device)
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.markdown(f"### {model_a}")
+            m, t, err = load_model(model_a)
+            if err:
+                st.error(err)
+            else:
+                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                display_results(audio, sr, m, t, device)
 
-            with col_b:
-                st.markdown(f"### {model_b}")
-                m, t, err = load_model(model_b)
-                if err:
-                    st.error(err)
-                else:
-                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                    display_results(audio, sr, m, t, device)
+        with col_b:
+            st.markdown(f"### {model_b}")
+            m, t, err = load_model(model_b)
+            if err:
+                st.error(err)
+            else:
+                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                display_results(audio, sr, m, t, device)
+  
