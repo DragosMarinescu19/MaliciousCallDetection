@@ -24,6 +24,7 @@ gTTS
 # ML and Visualization
 scikit-learn
 matplotlib
+seaborn
 tqdm
 ipykernel
 
