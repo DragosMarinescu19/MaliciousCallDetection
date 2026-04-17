@@ -1,0 +1,40 @@
+{
+  "os": "Linux-6.6.113+-x86_64-with-glibc2.35",
+  "python": "CPython 3.12.13",
+  "startedAt": "2026-03-29T19:44:32.084556Z",
+  "program": "Spectrograms.ipynb",
+  "codePath": "Spectrograms.ipynb",
+  "git": {
+    "remote": "https://github.com/DragosMarinescu19/MaliciousCallDetection.git",
+    "commit": "36210a268dc721a81d41a02a6084963cbe1bce1b"
+  },
+  "email": "hvbypkvkhz@privaterelay.appleid.com",
+  "root": "/content/drive/MyDrive/MaliciousCallDetection/dataset/malicious",
+  "host": "109838b3be64",
+  "executable": "/usr/bin/python3",
+  "colab": "https://colab.research.google.com/notebook#fileId=1Fh4hhaVOyqI8QbAA4BQoABo4QThVZYTb",
+  "cpu_count": 1,
+  "cpu_count_logical": 2,
+  "gpu": "Tesla T4",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "120942624768",
+      "used": "70179840000"
+    }
+  },
+  "memory": {
+    "total": "13605834752"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "Tesla T4",
+      "memoryTotal": "16106127360",
+      "cudaCores": 2560,
+      "architecture": "Turing",
+      "uuid": "GPU-a693861b-558f-5e29-00bc-3866833b5606"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "writerId": "dvgxffdde09zdxzmy8m2pfrly4834e3t"
+}
