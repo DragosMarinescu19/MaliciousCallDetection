@@ -23,22 +23,6 @@ class PredResult(TypedDict):
 
 
 MODEL_INFO: dict[str, ModelEntry] = {
-    "V14 — PF Detector (Aggressive)": {
-        "file": "malicious_call_detector_v14_best.pt",
-        "cls": CNN,
-        "desc": (
-            "Fine-tuned on Partially Fake audio. Catches 129/131 PF files "
-            "but may flag some normal calls."
-        ),
-    },
-    "V15 — Rebalanced ": {
-        "file": "malicious_call_detector_v15_best.pt",
-        "cls": CNN,
-        "desc": (
-            "Trained with extra Normal + Malicious data. Good balance, "
-            "improved Normal recall."
-        ),
-    },
     "V17 — EnhancedCNN + Simulate Telephony": {
         "file": "malicious_call_detector_v17_best.pt",
         "cls": EnhancedCNN,
@@ -53,6 +37,16 @@ MODEL_INFO: dict[str, ModelEntry] = {
         "file": "malicious_call_detector_v19_best.pt",
         "cls": EnhancedCNN,
         "desc": "Optuna-tuned EnhancedCNN architecture.",
+    },
+    "V20 — Best for malicious detection": {
+        "file": "malicious_call_detector_v20_best.pt",
+        "cls": EnhancedCNN,
+        "desc": "Best for malicious detection.",
+    },
+    "V21 — Almost like V20": {
+        "file": "malicious_call_detector_v21_best.pt",
+        "cls": EnhancedCNN,
+        "desc": "Almost like V20.",
     }
 }
 
