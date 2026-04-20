@@ -1,0 +1,4 @@
+Normal data=22649, Malicious=37079
+Weights applied: Normal=1.32, Malicious=0.81
+Starting training on cuda...
+                                                                                                    
