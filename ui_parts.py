@@ -41,7 +41,7 @@ def display_results(
     flagged = sum(1 for r in results if r["is_malicious"])
     total = len(results)
     mal_ratio = flagged / total
-    avg_confidence = float(np.mean([r["malicious_prob"] for r in results])) * 100
+    avg_confidence = float(np.mean([r["malicious_prob"] if r["is_malicious"] else 1-r["malicious_prob"] for r in results])) * 100
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -61,7 +61,6 @@ def display_results(
     st.markdown(f"**Fraud Risk Score:** {risk:.0f}/100")
     st.progress(min(risk / 100, 1.0))
 
-    # ── Per-window timeline ───────────────────────────────────────────────
     st.subheader("Per-Window Timeline")
     cols_per_row = 10
     for row_start in range(0, total, cols_per_row):
