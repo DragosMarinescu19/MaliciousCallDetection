@@ -43,10 +43,10 @@ MODEL_INFO: dict[str, ModelEntry] = {
         "cls": EnhancedCNN,
         "desc": "Best for malicious detection.",
     },
-    "V21 — Almost like V20": {
-        "file": "malicious_call_detector_v21_best.pt",
+    "V22 — V20 + Audio_With_Noise": {
+        "file": "malicious_call_detector_v22_best.pt",
         "cls": EnhancedCNN,
-        "desc": "Almost like V20.",
+        "desc": "V20 + Audio_With_Noise.",
     }
 }
 
