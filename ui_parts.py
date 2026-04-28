@@ -67,7 +67,7 @@ def display_results(
         cols = st.columns(min(cols_per_row, total - row_start))
         for i, col in enumerate(cols):
             idx = row_start + i
-            r: PredResult = cast(PredResult, results[idx])
+            r = results[idx]
             t = time_ranges[idx]
             if r["is_malicious"]:
                 col.markdown(
@@ -145,7 +145,7 @@ def _load_audio_from_file(
         tmp_path = tmp.name
 
     audio, sr = librosa.load(tmp_path, sr=16000)
-    os.unlink(tmp_path)
+    os.unlink(tmp_path) #delete the temporary file after reading it
     duration = len(audio) / sr
 
     if duration > max_duration:
@@ -237,18 +237,18 @@ def render_compare_tab(max_duration: int) -> None:
         col_a, col_b = st.columns(2)
         with col_a:
             st.markdown(f"### {model_a}")
-            m, t, err = load_model(model_a)
+            model_a, threshold_a, err = load_model(model_a)
             if err:
                 st.error(err)
             else:
                 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                display_results(audio, sr, m, t, device)
+                display_results(audio, sr, model_a, threshold_a, device)
 
         with col_b:
             st.markdown(f"### {model_b}")
-            m, t, err = load_model(model_b)
+            model_b, threshold_b, err = load_model(model_b)
             if err:
                 st.error(err)
             else:
                 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                display_results(audio, sr, m, t, device)
+                display_results(audio, sr, model_b, threshold_b, device)
