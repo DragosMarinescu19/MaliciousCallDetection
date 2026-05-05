@@ -108,28 +108,37 @@ model = EnhancedCNN()
 model.eval()  # dezactiveaza dropout ca sa nu confunde
 
 x = torch.randn(1, 1, 128, 157)  # 1 spectrograma
-fig, axes = plt.subplots(1, 2, figsize=(20, 8))
+fig, axes = plt.subplots(1, 3, figsize=(20, 8))
 axes = axes.flatten()
+mfcc_spec=librosa.feature.mfcc(y=x[0][0].numpy(), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+axes[0].imshow( #mfcc spectrogram
+    mfcc_spec,
+    origin='lower',
+    aspect='auto',
+    cmap='magma'
+)
+axes[0].set_title("MFCC Spectrogram")
+axes[0].set_xlabel("Time")
+axes[0].set_ylabel("MFCC bins")
 mel_spec = librosa.feature.melspectrogram(y=x[0][0].numpy(), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
-axes[0].imshow( #raw spectrogram
+axes[1].imshow( #mel spectrogram
     mel_spec,
     origin='lower',
     aspect='auto',
     cmap='magma'
 )
-axes[1].imshow( #raw spectrogram
+axes[2].imshow( #log-mel spectrogram
     librosa.power_to_db(mel_spec, ref=np.max),
     origin='lower',
     aspect='auto',
     cmap='magma'
 )
-axes[0].set_title("Raw Spectrogram")
-axes[1].set_title("Log Spectrogram")
-axes[0].set_xlabel("Time")
-axes[0].set_ylabel("Mel bins")
+axes[1].set_title("Mel Spectrogram")
+axes[2].set_title("Log MelSpectrogram")
+axes[2].set_xlabel("Time")
+axes[2].set_ylabel("Mel bins")
 axes[1].set_xlabel("Time")
 axes[1].set_ylabel("Mel bins")
 plt.tight_layout()
 plt.show()
-with torch.no_grad():
-    out = model(x)
+
