@@ -8,6 +8,7 @@ import librosa
 import librosa.display
 import numpy as np
 
+
 def configure_optimizer(model: nn.Module,lr=0.001,weight_decay=0.000222) -> optim.Optimizer:
     return optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 class EnhancedCNN(nn.Module):
@@ -107,10 +108,14 @@ class EnhancedCNN(nn.Module):
 model = EnhancedCNN()
 model.eval()  # dezactiveaza dropout ca sa nu confunde
 
-x = torch.randn(1, 1, 128, 157)  # 1 spectrograma
+x = np.random.rand(80000)  # 1 audio de 5 secunde
 fig, axes = plt.subplots(1, 3, figsize=(20, 8))
 axes = axes.flatten()
-mfcc_spec=librosa.feature.mfcc(y=x[0][0].numpy(), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+
+mel_spec = librosa.feature.melspectrogram(y=x, sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+print(mel_spec.shape)
+mfcc_spec=librosa.feature.mfcc(S=librosa.power_to_db(mel_spec, ref=np.max), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+print(mfcc_spec.shape)
 axes[0].imshow( #mfcc spectrogram
     mfcc_spec,
     origin='lower',
@@ -120,25 +125,27 @@ axes[0].imshow( #mfcc spectrogram
 axes[0].set_title("MFCC Spectrogram")
 axes[0].set_xlabel("Time")
 axes[0].set_ylabel("MFCC bins")
-mel_spec = librosa.feature.melspectrogram(y=x[0][0].numpy(), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+
 axes[1].imshow( #mel spectrogram
     mel_spec,
     origin='lower',
     aspect='auto',
     cmap='magma'
 )
+axes[1].set_title("Mel Spectrogram")
+axes[1].set_xlabel("Time")
+axes[1].set_ylabel("Mel bins")
+
 axes[2].imshow( #log-mel spectrogram
     librosa.power_to_db(mel_spec, ref=np.max),
     origin='lower',
     aspect='auto',
     cmap='magma'
 )
-axes[1].set_title("Mel Spectrogram")
 axes[2].set_title("Log MelSpectrogram")
 axes[2].set_xlabel("Time")
 axes[2].set_ylabel("Mel bins")
-axes[1].set_xlabel("Time")
-axes[1].set_ylabel("Mel bins")
+
 plt.tight_layout()
 plt.show()
 
