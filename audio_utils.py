@@ -38,12 +38,7 @@ MODEL_INFO: dict[str, ModelEntry] = {
         "cls": EnhancedCNN,
         "desc": "Optuna-tuned EnhancedCNN architecture.",
     },
-    "V20 — Best for malicious detection": {
-        "file": "malicious_call_detector_v20_best.pt",
-        "cls": EnhancedCNN,
-        "desc": "Best for malicious detection.",
-    },
-    "V22 — V20 + Audio_With_Noise": {
+    "V22 — Most optimized + Audio_With_Noise": {
         "file": "malicious_call_detector_v22_best.pt",
         "cls": EnhancedCNN,
         "desc": "V20 + Audio_With_Noise.",

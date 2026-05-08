@@ -98,15 +98,15 @@ class EnhancedCNN(nn.Module):
         # Classifier
         x = self.flatten(x);  print(f"Flatten:        {x.shape}")  # (batch, 512)
         x = self.fc1(x);      print(f"FC1:            {x.shape}")  # (batch, 256)
-        x = F.relu(x);        print(f"ReLU:           {x.shape}")  # (batch, 256)
-        x = self.drop_fc(x);  print(f"Dropout FC:     {x.shape}")  # (batch, 256)
+        x = F.relu(x);        print(f"ReLU:           {x[0][0:5]}")  # (batch, 256)
+        x = self.drop_fc(x);  print(f"Dropout FC:     {x}")  # (batch, 256)
         x = self.fc2(x);      print(f"FC2 (OUTPUT):   {x.shape}")  # (batch, 2)
         print(x)
 
         return x
 
 model = EnhancedCNN()
-model.eval()  # dezactiveaza dropout ca sa nu confunde
+model.eval()  #deactivate dropout
 
 x = np.random.rand(80000)  # 1 audio de 5 secunde
 fig, axes = plt.subplots(1, 3, figsize=(20, 8))
@@ -146,6 +146,8 @@ axes[2].set_title("Log MelSpectrogram")
 axes[2].set_xlabel("Time")
 axes[2].set_ylabel("Mel bins")
 
-plt.tight_layout()
-plt.show()
-
+# plt.tight_layout()
+# plt.show()
+x=torch.rand(1,1,128,157)
+with torch.no_grad():
+    model(x)
