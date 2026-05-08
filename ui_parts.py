@@ -174,7 +174,7 @@ def render_upload_tab(selected_model: str, max_duration: int) -> None:
             return
         audio, sr = result
 
-        st.audio(audio, format=f"audio/{suffix[1:]}")
+        st.audio(uploaded, format=f"audio/{suffix[1:]}")
 
         model, threshold, error = load_model(selected_model)
         if error:
