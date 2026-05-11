@@ -114,7 +114,7 @@ axes = axes.flatten()
 
 mel_spec = librosa.feature.melspectrogram(y=x, sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
 print(mel_spec.shape)
-mfcc_spec=librosa.feature.mfcc(S=librosa.power_to_db(mel_spec, ref=np.max), sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
+mfcc_spec=librosa.feature.mfcc(S=librosa.power_to_db(mel_spec, ref=np.max), n_mfcc=20, sr=16000, n_fft=2048,hop_length=512, n_mels=128) #shape=(128,157)
 print(mfcc_spec.shape)
 axes[0].imshow( #mfcc spectrogram
     mfcc_spec,
