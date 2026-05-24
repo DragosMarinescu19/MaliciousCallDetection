@@ -50,7 +50,11 @@ def display_results(
         else:
             st.success("**Verdict: NORMAL**")
     with col2:
-        st.metric("Flagged Windows", f"{flagged}/{total}", delta=f"{mal_ratio * 100:.1f}%")
+        if mal_ratio >= 0.5:
+            st.metric("Flagged Windows", f"{flagged}/{total}", delta=f"{mal_ratio * 100:.1f}%", delta_color="red")
+        else:
+            st.metric("Flagged Windows", f"{flagged}/{total}", delta=f"{mal_ratio * 100:.1f}%")
+        
     with col3:
         st.metric("Avg Confidence", f"{avg_confidence:.1f}%")
     with col4:
