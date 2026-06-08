@@ -47,8 +47,7 @@ with st.sidebar:
     st.divider()
     st.markdown("**About**")
     st.markdown(
-        "Built as part of a Bachelor's of Computer Science thesis on detecting "
-        "malicious phone calls using Convolutional Neural Networks and Mel Spectrograms."
+        
     )
     st.markdown("**Author:** Marinescu Dragoș")
 
