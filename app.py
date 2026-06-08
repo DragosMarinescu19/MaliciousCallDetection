@@ -46,7 +46,7 @@ with st.sidebar:
 
     st.divider()
   
-    st.markdown("**Author:** Marinescu Dragoș")
+    st.markdown("**Author:** Marinescu Dragoș, Mihai Munteanu")
 
 
 
