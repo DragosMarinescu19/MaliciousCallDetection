@@ -45,7 +45,12 @@ with st.sidebar:
     max_duration: int = st.slider("Max audio duration (seconds)", 10, 600, 120, step=10)
 
     st.divider()
-  
+    st.markdown("**About**")
+    st.markdown(
+        "Built as part of a Bachelor's of Computer Science thesis on detecting "
+        "malicious phone calls using Convolutional Neural Networks and Mel Spectrograms."
+    )
+    st.markdown("**Author:** Marinescu Dragoș")
 
 
 
