@@ -163,6 +163,12 @@ Models can be selected in the sidebar at runtime. Earlier versions (v1–v16) do
 
 ---
 
+##Limitations 
+
+Every device has it's own recording system which compresses sound differently, thus creating different spectral artifacts. Simulating the telephone channel made the model generalize better but it can still have a hard time detecting audios coming from non-proffesional microphones (such as laptops or mobile phones) 
+
+---
+
 ## Citation
 
 If you use this work, please cite the thesis:
